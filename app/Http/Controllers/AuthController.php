@@ -11,6 +11,7 @@ use Closure;
 
 class AuthController extends Controller
 {
+
     public function register()
     {
         return view('register');
@@ -62,7 +63,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-        ],[
+        ], [
             'email.required' => 'กรุณากรอกอีเมล',
             'email.email' => 'กรุณากรอกอีเมลที่ถูกต้อง',
             'password.required' => 'กรุณากรอกรหัสผ่าน',

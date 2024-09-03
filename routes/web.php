@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/form', function () {
     return view('form');
-}); //->name('form')
+})->middleware('auth');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -50,6 +50,7 @@ Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.
 // Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/home', [HomeController::class, 'search'])->name('home');
 
+// Route::get('/form', [NoteController::class, '__construct'])->middleware('auth');
 
 
 Route::group(['middleware' => ['custom_auth:1']], function () {
@@ -72,7 +73,7 @@ Route::post('/notes/{note}/delete-files', [NoteController::class, 'deleteFiles']
 Route::delete('/notes/{note}/delete-files', [NoteController::class, 'deleteFiles'])->name('notes.deleteFiles');
 
 // เส้นทางสำหรับการแสดงฟอร์มแก้ไข
-Route::get('notes/{note}/edit', [NoteController::class, 'edit'])->name('notes.edit');
+Route::get('notes/{note}/edit', [NoteController::class, 'edit'])->name('notes.edit')->middleware('auth');
 
 // เส้นทางสำหรับการอัปเดตโน้ต
 Route::put('notes/{note}', [NoteController::class, 'update'])->name('notes.update');

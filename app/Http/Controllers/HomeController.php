@@ -8,6 +8,11 @@ use App\Models\Note;
 
 class HomeController extends Controller
 {
+    public function __construct()
+    {
+        // Apply the 'auth' middleware to all routes in this controller
+        $this->middleware('auth');
+    }
     public function index()
     {
         return view('home');
@@ -24,11 +29,11 @@ class HomeController extends Controller
             ->where(function ($q) use ($query) {
                 $q->where('title', 'LIKE', '%' . $query . '%')  // แทนที่ 'field1' ด้วยชื่อฟิลด์ที่ต้องการค้นหา
                     ->orWhere('content', 'LIKE', '%' . $query . '%') // แทนที่ 'field2' ด้วยฟิลด์อื่นๆ ที่ต้องการค้นหา
-                    ->orWhere('created_at', 'LIKE', '%' . $query . '%');
+                    ->orWhere('created_at', 'LIKE', '%' . $query . '%')
+                    ->orWhere('updated_at', 'LIKE', '%' . $query);
             })
             ->get();
 
         return view('home', compact('notes'));
     }
-    
 }

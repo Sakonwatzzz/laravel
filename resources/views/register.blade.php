@@ -16,7 +16,14 @@
                     <h1 class="card-title">Register</h1>
                 </div>
                 <div class="card-body">
-                    @if(Session::has('success'))
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if (Session::has('success'))
                         <div class="alert alert-success">
                             {{ Session::get('success') }}
                         </div>
@@ -24,6 +31,11 @@
                     @if (session('error'))
                         <div class="alert alert-danger">
                             {{ session('error') }}
+                        </div>
+                    @endif
+                    @if ($errors->has('password'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('password') }}
                         </div>
                     @endif
                     <form action="{{ route('register') }}" method="POST">
@@ -38,7 +50,13 @@
                         </div>
                         <div class="form-group">
                             <label for="password">รหัสผ่าน</label>
-                            <input type="password" name="password" id="password" placeholder="ระบุรหัสผ่านของคุณ" required>
+                            <input type="password" name="password" id="password" placeholder="ระบุรหัสผ่านของคุณ"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">ยืนยันรหัสผ่าน</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                placeholder="ยืนยันรหัสผ่าน" required>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn-primary">สมัครสมาชิก</button>

@@ -87,7 +87,7 @@ class NoteController extends Controller
             }
         }
 
-
+        
         return redirect()->route('notes.index')->with('success', 'Note created successfully!');
     }
 

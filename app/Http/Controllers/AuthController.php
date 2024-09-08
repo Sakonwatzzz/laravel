@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Closure;
 
 class AuthController extends Controller
@@ -19,24 +20,42 @@ class AuthController extends Controller
 
     public function registerPost(Request $request)
     {
-        $user = new User();
+
+          $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8|confirmed',
+    ], [
+        'name.required' => 'กรุณากรอกชื่อ',
+        'email.required' => 'กรุณากรอกอีเมล',
+        'email.email' => 'กรุณากรอกอีเมลที่ถูกต้อง',
+        'email.unique' => 'อีเมลนี้มีคนใช้แล้ว',
+        'password.required' => 'กรุณากรอกรหัสผ่าน',
+        'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
+        'password.confirmed' => 'รหัสผ่านยืนยันไม่ตรงกัน',
+    ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         try {
+            $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
-
             $user->save();
-
-            return back()->with('success', 'Register successfully');
+            return redirect()->back()->with('success', 'สมัครสมาชิกสำเร็จ');
         } catch (QueryException $e) {
             // ตรวจสอบข้อผิดพลาดที่เกิดขึ้นหากอีเมลซ้ำกัน
             if ($e->errorInfo[1] == 1062) {
-                return back()->with('error', 'อีเมลนี้มีคนใช้แล้ว.');
+                return redirect()->back()->with('error', 'อีเมลนี้มีคนใช้แล้ว');
             }
-            return back()->with('error', 'An error occurred while registering.');
+            // หากข้อผิดพลาดไม่ใช่เนื่องจากอีเมลซ้ำ
+            return redirect()->back()->with('error', 'เกิดข้อผิดพลาดขณะลงทะเบียน' . $e->getMessage());
         }
     }
+
 
     public function login()
     {

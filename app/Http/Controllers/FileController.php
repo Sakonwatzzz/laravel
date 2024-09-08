@@ -38,7 +38,7 @@ class FileController extends Controller
         $file->mime_type = $request->file('file')->getMimeType();
         $file->file_size = $request->file('file')->getSize();
         $file->save();
-
+        
         return redirect()->route('files.index')->with('success', 'อัปโหลดไฟล์สำเร็จ');
     }
 

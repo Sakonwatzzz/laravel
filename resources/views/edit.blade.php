@@ -38,16 +38,6 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="file" class="form-label">Upload File</label>
-                        <input type="file" id="file" name="file[]" class="form-control" multiple>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="image" class="form-label">Upload Image</label>
-                        <input type="file" id="image" name="image[]" class="form-control" accept="image/*" multiple>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
 
                 </form>
 

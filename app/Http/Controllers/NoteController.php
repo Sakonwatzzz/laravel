@@ -18,7 +18,8 @@ class NoteController extends Controller
     {
         $user = Auth::user();
         $notes = Note::where('user_id', $user->id)->get();
-        return view('home', compact('notes'));
+        $count = $notes->count(); //  นับจำนวนโน๊ตใน$notes เก็บผลลัพธ์ไว้ในตัวแปร$count
+        return view('home', compact('notes','count'));
     }
 
     public function home()
@@ -171,6 +172,17 @@ class NoteController extends Controller
         } catch (\Exception $e) {
             Log::error('Note deletion error: ' . $e->getMessage());
             return back()->with('error', 'An error occurred while deleting the note. Please try again.');
+        }
+    }
+
+    public function countNote()
+    {
+        try {
+            $count = Note::all()->count();
+            return view('home', compact('count'));
+        } catch (\Exception $e) {
+            Log::error('Note count error: ' . $e->getMessage());
+            return view('home', ['count' => 0])->with('error', 'An error occurred while fetching the count.');
         }
     }
 }

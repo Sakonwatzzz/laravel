@@ -20,7 +20,6 @@
                 <form action="{{ route('notes.update', $note->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    {{-- @method('DELETE') --}}
 
                     <div class="form-group">
                         <label for="title" class="form-label">Title</label>

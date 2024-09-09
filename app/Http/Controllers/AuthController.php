@@ -98,6 +98,7 @@ class AuthController extends Controller
             return redirect()->intended('/home');
         }
         return redirect()->back()->withErrors(['error' => 'ข้อมูลประจำตัวไม่ถูกต้อง']);
+        return redirect()->back()->with('error', 'คุณยังไม่ได้สมัครเข้าใช้งาน' . $e->getMessage());
     }
 
     public function logout(Request $userId)

@@ -12,18 +12,20 @@ class NoteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-    }
+        $this->middleware('auth'); //$this->middleware('auth'); คือการเรียกใช้ method middleware เพื่อกำหนด middleware auth สำหรับคอนโทรลเลอร์นี้
+                                    //Middleware auth จะตรวจสอบว่าผู้ใช้ที่พยายามเข้าถึงคอนโทรลเลอร์นี้ได้เข้าสู่ระบบแล้วหรือไม่
+    }       
     public function index()
     {
         $user = Auth::user();
         $notes = Note::where('user_id', $user->id)->get();
-        $count = $notes->count(); //  นับจำนวนโน๊ตใน$notes เก็บผลลัพธ์ไว้ในตัวแปร$count
-        return view('home', compact('notes','count'));
+        //$count = $notes->count(); //  นับจำนวนโน๊ตใน$notes เก็บผลลัพธ์ไว้ในตัวแปร$count
+        return view('home', compact('notes'));
     }
 
     public function home()
     {
+    
         return $this->index();
     }
 
@@ -179,7 +181,7 @@ class NoteController extends Controller
     {
         try {
             $count = Note::all()->count();
-            return view('home', compact('count'));
+            return view('home', ['count' => $count]);
         } catch (\Exception $e) {
             Log::error('Note count error: ' . $e->getMessage());
             return view('home', ['count' => 0])->with('error', 'An error occurred while fetching the count.');

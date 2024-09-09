@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Note;
+use Illuminate\Support\Facades\Log;
+
 
 class HomeController extends Controller
 {
@@ -15,6 +17,7 @@ class HomeController extends Controller
     }
     public function index()
     {
+        
         return view('home');
     }
     public function search(Request $request)
@@ -35,5 +38,15 @@ class HomeController extends Controller
             ->get();
 
         return view('home', compact('notes'));
+    }
+    public function countNote()
+    {
+        try {
+            $count = Note::all()->count();
+            return view('home', compact('count'));
+        } catch (\Exception $e) {
+            Log::error('Note count error: ' . $e->getMessage());
+            return view('home', ['count' => 0])->with('error', 'An error occurred while fetching the count.');
+        }
     }
 }

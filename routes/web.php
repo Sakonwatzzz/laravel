@@ -37,9 +37,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+// เส้นทางที่ใช้สำหรับการแสดงจำนวนโน้ต
+Route::get('/home', [NoteController::class, 'countNote'])->name('home')->middleware('auth');
 
 Route::get('/home', [NoteController::class, 'index'])->name('notes.index');
-Route::get('/home', [NoteController::class, 'home'])->name('home');
+
+// Route::get('/home', [NoteController::class, 'index'])->name('notes.index');
+// Route::get('/home', [NoteController::class, 'home'])->name('home');
 
 Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
 Route::get('/notes/create', [NoteController::class, 'create'])->name('notes.create');

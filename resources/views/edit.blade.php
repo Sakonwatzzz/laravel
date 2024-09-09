@@ -19,8 +19,9 @@
 
                 <form action="{{ route('notes.update', $note->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
-
+                    @if (isset($note))
+                        @method('PUT')
+                    @endif
                     <div class="form-group">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" id="title" name="title" class="form-control"
@@ -37,6 +38,46 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="files">เลือกไฟล์</label>
+                        <input type="file" name="files[]" id="files" multiple>
+
+                        <!-- แสดงไฟล์ที่ถูกบันทึกไว้ก่อนหน้า -->
+                        <div id="files-preview" class="preview-container">
+                            @if (isset($note) && $note->files)
+                                @foreach ($note->files as $file)
+                                    <p>{{ $file->file_name }}</p>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">เลือกรูปภาพ</label>
+                        <font color="red">*อัพโหลดได้เฉพาะ .jpeg , .jpg , .png หรือ เฉพาะรูปภาพเท่านั้น</font>
+                        <input type="file" name="images[]" id="images" accept="image/*" multiple>
+
+                        <!-- แสดงรูปภาพที่ถูกบันทึกไว้ก่อนหน้า -->
+                        <div id="images-preview" class="preview-container">
+                            @if (isset($note) && $note->images)
+                                @foreach ($note->images as $image)
+                                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                                        style="width: 100px; margin-right: 10px;">
+                                @endforeach
+                            @endif
+                        </div>
+                        @if ($errors->has('images'))
+                            <p class="text-danger">{{ $errors->first('images') }}</p>
+                        @endif
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">
+                        {{ isset($note) ? 'Update' : 'Create' }} Note
+                    </button>
+
+                </form>
+                <form action="{{ route('notes.deleteFiles', $note->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+
                     <div class="form-group">
                         <label class="form-label">Existing Files</label>
                         <div>
@@ -57,7 +98,6 @@
                             @endforeach
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success">Update Selected</button>
                     <button type="submit" class="btn btn-danger">Delete Selected</button>
                     <a href="{{ route('notes.index') }}" class="btn btn-info"> Back</a>
                 </form>

@@ -13,8 +13,8 @@ class NoteController extends Controller
     public function __construct()
     {
         $this->middleware('auth'); //$this->middleware('auth'); คือการเรียกใช้ method middleware เพื่อกำหนด middleware auth สำหรับคอนโทรลเลอร์นี้
-                                    //Middleware auth จะตรวจสอบว่าผู้ใช้ที่พยายามเข้าถึงคอนโทรลเลอร์นี้ได้เข้าสู่ระบบแล้วหรือไม่
-    }       
+        //Middleware auth จะตรวจสอบว่าผู้ใช้ที่พยายามเข้าถึงคอนโทรลเลอร์นี้ได้เข้าสู่ระบบแล้วหรือไม่
+    }
     public function index()
     {
         $user = Auth::user();
@@ -25,7 +25,7 @@ class NoteController extends Controller
 
     public function home()
     {
-    
+
         return $this->index();
     }
 
@@ -88,8 +88,6 @@ class NoteController extends Controller
                 ]);
             }
         }
-
-        
         return redirect()->route('notes.index')->with('success', 'Note created successfully!');
     }
 
@@ -111,8 +109,8 @@ class NoteController extends Controller
         ]);
 
         // อัปเดตหรือเพิ่มไฟล์ใหม่
-        if ($request->hasFile('file')) {
-            foreach ($request->file('file') as $file) {
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
                 $filePath = $file->store('uploads/files', 'public');
                 $note->files()->create([
                     'file_name' => $file->getClientOriginalName(),
@@ -124,8 +122,8 @@ class NoteController extends Controller
         }
 
         // อัปเดตหรือเพิ่มรูปภาพใหม่
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
                 $imagePath = $image->store('uploads/images', 'public');
                 $note->images()->create([
                     'image_name' => $image->getClientOriginalName(),
@@ -135,7 +133,12 @@ class NoteController extends Controller
                 ]);
             }
         }
-        
+        return redirect()->route('notes.index')->with('success', 'Note updated successfully!');
+    }
+
+    public function deleteFiles(Request $request, Note $note)
+    {
+        //ลบไฟล์ที่เลือก
         if ($request->has('delete_files')) {
             foreach ($request->delete_files as $fileId) {
                 $file = $note->files()->find($fileId);
@@ -156,34 +159,7 @@ class NoteController extends Controller
                 }
             }
         }
-        // return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
-        return redirect()->route('notes.index')->with('success', 'Note updated successfully!');
-    }
-
-    public function deleteFiles(Request $request, Note $note)
-    {
-        // ลบไฟล์ที่เลือก
-        // if ($request->has('delete_files')) {
-        //     foreach ($request->delete_files as $fileId) {
-        //         $file = $note->files()->find($fileId);
-        //         if ($file) {
-        //             Storage::delete('public/' . $file->file_path); // ลบไฟล์จาก storage
-        //             $file->delete(); // ลบข้อมูลจากฐานข้อมูล
-        //         }
-        //     }
-        // }
-
-        // // ลบรูปภาพที่เลือก
-        // if ($request->has('delete_images')) {
-        //     foreach ($request->delete_images as $imageId) {
-        //         $image = $note->images()->find($imageId);
-        //         if ($image) {
-        //             Storage::delete('public/' . $image->image_path); // ลบรูปภาพจาก storage
-        //             $image->delete(); // ลบข้อมูลจากฐานข้อมูล
-        //         }
-        //     }
-        // }
-        // return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
+        return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
     }
 
     public function destroy(Note $note)

@@ -61,36 +61,6 @@
                     <button type="submit" class="btn btn-danger">Delete Selected</button>
                     <a href="{{ route('notes.index') }}" class="btn btn-info"> Back</a>
                 </form>
-
-                {{-- <form action="{{ route('notes.deleteFiles', $note->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-
-                    <div class="form-group">
-                        <label class="form-label">Existing Files</label>
-                        <div>
-                            @foreach ($note->files as $file)
-                                <input type="checkbox" name="delete_files[]" value="{{ $file->id }}">
-                                <a href="{{ Storage::url($file->file_path) }}" class="d-block">{{ $file->file_name }}</a>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Existing Images</label>
-                        <div>
-                            @foreach ($note->images as $image)
-                                <input type="checkbox" name="delete_images[]" value="{{ $image->id }}">
-                                <img src="{{ Storage::url($image->image_path) }}" alt="{{ $image->image_name }}"
-                                    class="img-thumbnail me-2" style="max-width: 150px;">
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-danger">Delete Selected</button>
-                    <a href="{{ route('notes.index') }}" class="btn btn-info"> Back</a>
-                </form> --}}
-
             </div>
         </div>
     @endsection

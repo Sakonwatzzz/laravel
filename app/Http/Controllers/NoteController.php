@@ -135,13 +135,7 @@ class NoteController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('notes.index')->with('success', 'Note updated successfully!');
-    }
-
-    public function deleteFiles(Request $request, Note $note)
-    {
-        // ลบไฟล์ที่เลือก
+        
         if ($request->has('delete_files')) {
             foreach ($request->delete_files as $fileId) {
                 $file = $note->files()->find($fileId);
@@ -162,7 +156,34 @@ class NoteController extends Controller
                 }
             }
         }
-        return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
+        // return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
+        return redirect()->route('notes.index')->with('success', 'Note updated successfully!');
+    }
+
+    public function deleteFiles(Request $request, Note $note)
+    {
+        // ลบไฟล์ที่เลือก
+        // if ($request->has('delete_files')) {
+        //     foreach ($request->delete_files as $fileId) {
+        //         $file = $note->files()->find($fileId);
+        //         if ($file) {
+        //             Storage::delete('public/' . $file->file_path); // ลบไฟล์จาก storage
+        //             $file->delete(); // ลบข้อมูลจากฐานข้อมูล
+        //         }
+        //     }
+        // }
+
+        // // ลบรูปภาพที่เลือก
+        // if ($request->has('delete_images')) {
+        //     foreach ($request->delete_images as $imageId) {
+        //         $image = $note->images()->find($imageId);
+        //         if ($image) {
+        //             Storage::delete('public/' . $image->image_path); // ลบรูปภาพจาก storage
+        //             $image->delete(); // ลบข้อมูลจากฐานข้อมูล
+        //         }
+        //     }
+        // }
+        // return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
     }
 
     public function destroy(Note $note)

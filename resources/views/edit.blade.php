@@ -17,9 +17,10 @@
             <div class="card">
                 <h1 class="mb-4">แก้ไขโน้ต</h1>
 
-                <form action="{{ route('notes.update', $note) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('notes.update', $note->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    {{-- @method('DELETE') --}}
 
                     <div class="form-group">
                         <label for="title" class="form-label">Title</label>
@@ -37,11 +38,32 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">Existing Files</label>
+                        <div>
+                            @foreach ($note->files as $file)
+                                <input type="checkbox" name="delete_files[]" value="{{ $file->id }}">
+                                <a href="{{ Storage::url($file->file_path) }}" class="d-block">{{ $file->file_name }}</a>
+                            @endforeach
+                        </div>
+                    </div>
 
-
+                    <div class="form-group">
+                        <label class="form-label">Existing Images</label>
+                        <div>
+                            @foreach ($note->images as $image)
+                                <input type="checkbox" name="delete_images[]" value="{{ $image->id }}">
+                                <img src="{{ Storage::url($image->image_path) }}" alt="{{ $image->image_name }}"
+                                    class="img-thumbnail me-2" style="max-width: 150px;">
+                            @endforeach
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Update Selected</button>
+                    <button type="submit" class="btn btn-danger">Delete Selected</button>
+                    <a href="{{ route('notes.index') }}" class="btn btn-info"> Back</a>
                 </form>
 
-                <form action="{{ route('notes.deleteFiles', $note->id) }}" method="POST">
+                {{-- <form action="{{ route('notes.deleteFiles', $note->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
 
@@ -68,7 +90,7 @@
 
                     <button type="submit" class="btn btn-danger">Delete Selected</button>
                     <a href="{{ route('notes.index') }}" class="btn btn-info"> Back</a>
-                </form>
+                </form> --}}
 
             </div>
         </div>

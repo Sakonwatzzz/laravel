@@ -12,7 +12,7 @@
 
 <body>
     <div class="container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding:1.5rem">
-        <img src="{{ asset('images/writing.png') }}" alt="" style="width:100px; height:100px;">
+        <img src="{{ asset('images/wirte.png') }}" alt="" style="width:70px; height:70px;">
         <div class="form-container">
             <h1>เข้าสู่ระบบ</h1>
             <form action="{{ route('login') }}" method="POST">

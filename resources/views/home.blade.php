@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/note.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -65,7 +71,7 @@
                                     @endforeach
                                 </ul>
                             @endif
-                            @if ($note->images->isNotEmpty())
+                            @if ($note->images->isNotEmpty()) 
                                 <h3>รูปภาพ</h3>
                                 <div class="image-gallery">
                                     @foreach ($note->images as $image)
@@ -93,22 +99,23 @@
     document.addEventListener('DOMContentLoaded', () => {
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
-                confirmButton: "btn btn-success",
-                cancelButton: "btn btn-danger"
+                confirmButton: "btn btn-success", // ปุ่มสีเขียวสำหรับการลบ
+                cancelButton: "btn btn-danger" // ปุ่มสีแดงสำหรับการยกเลิก
             },
             buttonsStyling: false
         });
 
+        // ฟังก์ชันการทำงานของปุ่มลบ
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const noteId = this.getAttribute('data-id');
                 swalWithBootstrapButtons.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
+                    title: "คุณแน่ใจหรือไม่?",
+                    text: "คุณจะไม่สามารถเปลี่ยนกลับสิ่งนี้ได้!",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-                    cancelButtonText: "No, cancel!",
+                    confirmButtonText: "ใช่, ลบเลย!",
+                    cancelButtonText: "ไม่, ยกเลิก!",
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -116,15 +123,15 @@
                         form.method = 'POST';
                         form.action = `/notes/${noteId}`;
                         form.innerHTML = `
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        `;
+                           <input type="hidden" name="_method" value="DELETE">
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                       `;
                         document.body.appendChild(form);
                         form.submit();
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire(
-                            'Cancelled',
-                            'Your imaginary file is safe :)',
+                            'ยกเลิกแล้ว',
+                            'โน้ตของคุณยังคงอยู่ :)',
                             'error'
                         );
                     }
@@ -133,5 +140,7 @@
         });
     });
 </script>
+
+
 
 </html>

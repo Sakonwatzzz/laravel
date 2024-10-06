@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Search Page</title>
+    <link rel="icon" type="image/x-icon" href="/images/note.png">
+
     <link href="{{ asset('css/search.css') }}" rel="stylesheet">
 </head>
 

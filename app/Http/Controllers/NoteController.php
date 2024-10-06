@@ -88,7 +88,8 @@ class NoteController extends Controller
                 ]);
             }
         }
-        return redirect()->route('notes.index')->with('success', 'Note created successfully!');
+        return redirect()->route('home')->with('success', 'คุณได้สร้างโน๊ตแล้ว!');
+        //เปลี่ยนจาก notes.index เป็น home
     }
 
     public function update(Request $request, Note $note)
@@ -133,7 +134,8 @@ class NoteController extends Controller
                 ]);
             }
         }
-        return redirect()->route('notes.index')->with('success', 'Note updated successfully!');
+        return redirect()->route(route: 'home')->with('success', 'โน๊ตของคุณได้รับการแก้ไขแล้ว');
+        //เปลี่ยนจาก notes.index เป็น home
     }
 
     public function deleteFiles(Request $request, Note $note)
@@ -159,7 +161,7 @@ class NoteController extends Controller
                 }
             }
         }
-        return redirect()->route('notes.edit', $note->id)->with('success', 'Selected files and images deleted successfully.');
+        return redirect()->route('notes.edit', $note->id)->with('success', 'ไฟล์และรูปภาพที่เลือกได้ทำการลบแล้ว!');
     }
 
     public function destroy(Note $note)
@@ -167,7 +169,7 @@ class NoteController extends Controller
 
         try {
             $note->delete(); // ลบ Note
-            return redirect()->route('notes.index')->with('success', 'Note deleted successfully!');
+            return redirect()->route('home')->with('success', 'Note deleted successfully!');
         } catch (\Exception $e) {
             Log::error('Note deletion error: ' . $e->getMessage());
             return back()->with('error', 'An error occurred while deleting the note. Please try again.');

@@ -32,6 +32,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [AuthController::class, 'loginPost'])->name('login');
 });
 
+
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home.page');
     Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -42,14 +44,16 @@ Route::get('/home', [NoteController::class, 'countNote'])->name('home')->middlew
 
 Route::get('/home', [NoteController::class, 'index'])->name('notes.index');
 
-// Route::get('/home', [NoteController::class, 'index'])->name('notes.index');
-// Route::get('/home', [NoteController::class, 'home'])->name('home');
 
 Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
 Route::get('/notes/create', [NoteController::class, 'create'])->name('notes.create');
 Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+
+// เส้นทางสำหรับการแสดงฟอร์มแก้ไข
 Route::get('/notes/{note}/edit', [NoteController::class, 'edit'])->name('notes.edit');
+// เส้นทางสำหรับการอัปเดตโน้ต
 Route::put('/notes/{note}', [NoteController::class, 'update'])->name('notes.update');
+
 Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
 
 Route::get('/home', [HomeController::class, 'search'])->name('home');
@@ -75,8 +79,6 @@ Route::resource('notes', NoteController::class);
 Route::post('/notes/{note}/delete-files', [NoteController::class, 'deleteFiles'])->name('notes.deleteFiles');
 Route::delete('/notes/{note}/delete-files', [NoteController::class, 'deleteFiles'])->name('notes.deleteFiles');
 
-// เส้นทางสำหรับการแสดงฟอร์มแก้ไข
-Route::get('notes/{note}/edit', [NoteController::class, 'edit'])->name('notes.edit')->middleware('auth');
 
-// เส้นทางสำหรับการอัปเดตโน้ต
-Route::put('notes/{note}', [NoteController::class, 'update'])->name('notes.update');
+
+
